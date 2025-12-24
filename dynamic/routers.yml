@@ -1,0 +1,40 @@
+http:
+  routers:
+    example:
+      rule: Host(`example.int.youkyi.net`)
+      service: example
+      entryPoints:
+        - websecure
+      middlewares:
+        - chain-standard
+    # example:
+    #   rule: Host(`example.int.youkyi.net`)
+    #   service: example
+    #   entryPoints:
+    #     - websecure
+    #   middlewares:
+    #     - chain-standard
+    # example:
+    #   rule: Host(`example.int.youkyi.net`)
+    #   service: example
+    #   entryPoints:
+    #     - websecure
+    #   middlewares:
+    #     - chain-standard
+    # example:
+    #   rule: Host(`example.int.youkyi.net`)
+    #   service: example
+    #   entryPoints:
+    #     - websecure
+    #   middlewares:
+    #     - chain-standard
+    # example:
+    #   rule: Host(`example.int.youkyi.net`)
+    #   service: example
+    #   entryPoints:
+    #     - websecure
+    #   middlewares:
+    #     - chain-standard
+
+
+        

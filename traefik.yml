@@ -1,0 +1,74 @@
+# ==========================================
+# YouKyi – Traefik (static)
+# ==========================================
+# Loaded when the container starts up
+# Manages entrypoints, providers, resolvers, logs, plugins
+# ==========================================
+api: {}
+
+log:
+  level: INFO
+
+ping: {}
+
+accessLog:
+  format: json
+  fields:
+    defaultMode: keep
+
+metrics:
+  prometheus: {}
+tracing: {}
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: ":443"
+    http3:
+      advertisedPort: 443
+    http:
+      tls:
+        certResolver: cloudflare-int
+        domains:
+          - main: "*.int.domain.com"
+            sans:
+              - "*.int.domain.com"
+              - "int.domain.com"
+              - "int.domain.com"
+    transport:
+      respondingTimeouts:
+        readTimeout: 600s
+        idleTimeout: 600s
+        writeTimeout: 599s 
+
+providers:
+  docker:
+    exposedByDefault: false
+    watch: true
+    network: proxy
+  file:
+    directory: /etc/traefik/git/dynamic
+    watch: true
+
+certificatesResolvers:
+  cloudflare-int:
+    acme:
+      # caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      email: "email@domain.com"
+      storage: "/etc/traefik/acme/acme.json"
+      caServer: "https://acme-v02.api.letsencrypt.org/directory"
+      dnsChallenge:
+        provider: cloudflare
+        resolvers: # Authorise the DNS port for public resolution in the Edge Firewall. 
+          - "1.1.1.1:53"
+          - "8.8.8.8:53"
+        propagation:
+          disableChecks: false
+          delayBeforeChecks: 60

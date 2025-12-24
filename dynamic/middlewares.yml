@@ -1,0 +1,90 @@
+http:
+  middlewares:
+    # --- AUTHENTIFICATION ---
+    auth-authentik: # Authentification via Authentik
+      forwardAuth:
+        address: https://proxy-authentik:9443/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        tls:
+          insecureSkipVerify: true
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-entitlements
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+          - X-authentik-jwt
+          - X-authentik-meta-jwks
+          - X-authentik-meta-outpost
+          - X-authentik-meta-provider
+          - X-authentik-meta-app
+          - X-authentik-meta-version
+
+    # --- SECURITY (HEADERS)  ---
+    sec-headers-standard: # Standard headers
+      headers:
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+
+    # --- SECURITY (IP/NETWORK) ---
+    sec-allow-prometheus-only: # Allow only prometheus traffic
+      ipAllowList:
+        sourceRange: ["0.0.0.0/32"]
+        ipStrategy: { depth: 0 }
+
+    # sec-allow-prometheus-only-behind-proxy: # Only allow prometheus traffic behind a proxy
+    #   ipAllowList:
+    #     sourceRange: ["0.0.0.0/32"]
+    #     ipStrategy: { depth: 1 }
+
+    # --- UTILITY ---
+    util-compress:
+      compress: {}
+
+    # --- CHAINS (WHERE THE MAGIC HAPPENS) ---
+    chain-standard: # Standard chain for unauthenticated traffic
+      chain:
+        middlewares:
+          - sec-headers-standard
+          - util-compress
+
+    chain-standard-authentik: # Standard chain for authenticated traffic
+      chain:
+        middlewares:
+          - sec-headers-standard
+          - util-compress
+          - auth-authentik
+
+    chain-standard-with-errors: # Standard chain for unauthenticated traffic with error handling
+      chain:
+        middlewares:
+          - sec-headers-standard
+          - util-compress
+          - util-error-handler@docker
+
+    chain-standard-with-errors-authentik: # Standard chain for authenticated traffic with error handling
+      chain:
+        middlewares:
+          - sec-headers-standard
+          - util-compress
+          - util-error-handler@docker
+          - auth-authentik
+
+    chain-prometheus-restricted: # Standard chain for restricted prometheus traffic
+      chain:
+        middlewares:
+          - sec-allow-prometheus-only
+          - sec-headers-standard
+          - util-compress
+
+    # chain-prometheus-restricted-behind-proxy: # Standard chain for prometheus traffic restricted behind a proxy
+    #   chain:
+    #     middlewares:
+    #       - sec-allow-prometheus-only-behind-proxy
+    #       - sec-headers-standard
+    #       - util-compress

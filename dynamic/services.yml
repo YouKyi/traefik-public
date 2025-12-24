@@ -1,0 +1,35 @@
+http:
+  services:
+    example:
+      loadBalancer:
+        serversTransport: insecure-skip-verify
+        servers:
+          - url: http://example:9120
+    # example:
+    #   loadBalancer:
+    #     serversTransport: insecure-skip-verify
+    #     servers:
+    #       - url: http://example:9120
+    # example:
+    #   loadBalancer:
+    #     serversTransport: insecure-skip-verify
+    #     servers:
+    #       - url: http://example:9120
+    # example:
+    #   loadBalancer:
+    #     serversTransport: insecure-skip-verify
+    #     servers:
+    #       - url: http://example:9120
+    # example:
+    #   loadBalancer:
+    #     serversTransport: insecure-skip-verify
+    #     servers:
+    #       - url: http://example:9120
+    # example:
+    #   loadBalancer:
+    #     serversTransport: insecure-skip-verify
+    #     servers:
+    #       - url: http://example:9120
+  serversTransports:
+    insecure-skip-verify:
+      insecureSkipVerify: true
