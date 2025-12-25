@@ -1,3 +1,7 @@
+**Interactive visualization of a Zero Trust Architecture using Traefik**
+
+[🚀 **Live Demo**](https://youkyi.github.io/traefik-archi/)
+
 # Traefik Configuration - [YouKyi's] Infrastructure
 
 This repository contains the base configuration and templates for [YouKyi's]'s Traefik instances. It serves as the reference point for deploying *Reverse Proxies* within a secure architecture.
