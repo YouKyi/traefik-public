@@ -5,7 +5,7 @@
 
 **Interactive visualization of a Zero Trust Architecture using Traefik**
 
-[🚀 **Live Demo**](https://youkyi.github.io/traefik-archi/) | [📖 **Documentation**](#features)
+[🚀 **Live Demo**](https://youkyi.github.io/traefik-archi/) | [📖 **Documentation**](#traffic-management--middlewares)
 
 </div>
 
