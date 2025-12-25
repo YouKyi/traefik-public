@@ -31,6 +31,9 @@ entryPoints:
 
   websecure:
     address: ":443"
+    forwardedHeaders: # IP addresses of upstream reverse proxies to trust headers (for example, to retrieve the client's real IP address).
+      trustedIPs:
+        - "0.0.0.0/32"
     http3:
       advertisedPort: 443
     http:
